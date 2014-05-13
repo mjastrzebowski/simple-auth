@@ -3,7 +3,6 @@
   if (empty($_POST)) {
     $_POST = json_decode(file_get_contents('php://input'), true);
   }
-  var_dump($_POST);
 
   $admin_email = 'admin@admin.com';
   $admin_password = 'Admin1';
@@ -40,5 +39,3 @@
   } else {
     http_response_code(500);
   }
-
-// http_response_code(404);

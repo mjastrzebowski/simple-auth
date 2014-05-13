@@ -31,28 +31,21 @@ var tests = [
   }
 ];
 
-asyncTest('Form status', tests.length, function() {
-  function checkStatus() {
-    if (testId < tests.length) {
-      var $form = $('form');
-      var $status = $form.find('.status');
-      var $email = $form.find('#email');
-      var $password = $form.find('#password');
+var $form = $('form');
+var $status = $form.find('.status');
+var $email = $form.find('#email');
+var $password = $form.find('#password');
 
-      var test = tests[testId];
-      $email.val(test.email);
-      $password.val(test.password);
-      $form.trigger('submit');
-
-      setTimeout(function() {
-        equal($status.text(), test.expected_status);
-        testId++;
-        checkStatus();
-      }, 1000);
-    } else {
-      start();
-    }
+function testStatus() {
+  if (testId < tests.length) {
+    $email.val(tests[testId].email);  // set email for test
+    $password.val(tests[testId].password);  // set password for test
+    $form.trigger('submit');  // submit a form
+  } else {
+    start();
   }
+}
 
-  checkStatus();
+asyncTest('Form status', tests.length, function() {
+  testStatus();
 });

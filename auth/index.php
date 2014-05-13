@@ -1,5 +1,18 @@
 <?php
 
+  if (!function_exists('http_response_code')) {
+    function http_response_code($newcode = NULL) {
+      static $code = 200;
+      if($newcode !== NULL) {
+        header('X-PHP-Response-Code: ' . $newcode, true, $newcode);
+        if (!headers_sent()) {
+          $code = $newcode;
+        }
+      }       
+      return $code;
+    }
+  }
+
   if (empty($_POST)) {
     $_POST = json_decode(file_get_contents('php://input'), true);
   }
@@ -24,8 +37,8 @@
   }
 
   if (isset($_POST['email']) && isset($_POST['password'])) {
-    $email = mysql_real_escape_string(trim($_POST['email']));
-    $password = mysql_real_escape_string(trim($_POST['password']));
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
 
     if (validateEmail($email) && validatePassword($password)) {
       if ($email === $admin_email && $password === $admin_password) {

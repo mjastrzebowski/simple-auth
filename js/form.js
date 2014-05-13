@@ -2,6 +2,7 @@
   $('form').submit(function(e) {
     e.preventDefault();
     var form = $(this);
+    var status = form.find('.status');
     var email = form.find('#email').val();
     var password = form.find('#password').val();
     var testEmail = /^([\w-\.\+]+@([\w-]+\.)+[\w-]{2,5})?$/;
@@ -15,20 +16,22 @@
         data: form.serializeObject(),
         statusCode: {
           201: function() {
-            console.log('logowanie poprawne');
-            form.fadeOut();
+            status.text('Logowanie poprawne');
+            form.find('fieldset').slideUp();
           },
           401: function() {
-            console.log('niepoprawny login lub haslo');
+            status.text('Niepoprawny login lub hasło');
           },
           400: function() {
-            console.log('niepoprawne dane');
+            status.text('Niepoprawne dane');
           },
           500: function() {
-            console.log('blad uslugi');
+            status.text('Błąd usługi');
           }
         }
       });
+    } else {
+      status.text('Niepoprawne dane');
     }
   });
 })(jQuery);
